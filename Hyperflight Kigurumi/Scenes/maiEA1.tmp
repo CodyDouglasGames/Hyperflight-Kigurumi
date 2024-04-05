@@ -1,0 +1,182 @@
+[gd_scene load_steps=11 format=3 uid="uid://d2kd26km0j0l2"]
+
+[ext_resource type="PackedScene" uid="uid://cfk645qty3wyk" path="res://Scenes/bg.tscn" id="1_3j2fc"]
+[ext_resource type="PackedScene" uid="uid://chij81c720oei" path="res://Scenes/player.tscn" id="1_igq65"]
+[ext_resource type="PackedScene" uid="uid://bshp6sk48mac7" path="res://Scenes/sonic_pinball.tscn" id="2_mmmr6"]
+[ext_resource type="PackedScene" uid="uid://nef3a8fdp77g" path="res://Scenes/bat.tscn" id="2_x4cnv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2hl4m"]
+size = Vector2(96, 1081)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q6efs"]
+size = Vector2(96, 1081)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hv6qm"]
+size = Vector2(1920, 97)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_utrb3"]
+size = Vector2(1920, 97)
+
+[sub_resource type="GDScript" id="GDScript_a67cn"]
+resource_name = "Velocity"
+script/source = "extends Label
+
+var strX
+var strY
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	strX = str(\"%03d\" % int($\"../../Player\".velocity.x))
+	strY = str(\"%03d\" % int($\"../../Player\".velocity.y))
+	
+	await $Timer.timeout
+	text = \"(\" + strX + \",\" + strY + \")\"
+"
+
+[sub_resource type="GDScript" id="GDScript_4rf04"]
+resource_name = "moveModeLabel"
+script/source = "extends Label
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	text = $\"../../Player\".moveMode
+"
+
+[node name="Main" type="Node2D"]
+
+[node name="BG" parent="." instance=ExtResource("1_3j2fc")]
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="LeftWall" type="Panel" parent="Walls"]
+offset_left = -96.0
+offset_bottom = 1080.0
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/LeftWall"]
+position = Vector2(96, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall/StaticBody2D"]
+position = Vector2(-48, 539.5)
+shape = SubResource("RectangleShape2D_2hl4m")
+
+[node name="RightWall" type="Panel" parent="Walls"]
+offset_left = 1920.0
+offset_right = 2016.0
+offset_bottom = 1080.0
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/RightWall"]
+position = Vector2(96, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall/StaticBody2D"]
+position = Vector2(-48, 539.5)
+shape = SubResource("RectangleShape2D_q6efs")
+
+[node name="Floor" type="Panel" parent="Walls"]
+offset_top = 1080.0
+offset_right = 1920.0
+offset_bottom = 1176.0
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/Floor"]
+position = Vector2(96, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Floor/StaticBody2D"]
+position = Vector2(864, 47.5)
+shape = SubResource("RectangleShape2D_hv6qm")
+
+[node name="Ceiling" type="Panel" parent="Walls"]
+offset_top = -96.0
+offset_right = 1920.0
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/Ceiling"]
+position = Vector2(96, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Ceiling/StaticBody2D"]
+position = Vector2(864, 47.5)
+shape = SubResource("RectangleShape2D_utrb3")
+
+[node name="Player" parent="." instance=ExtResource("1_igq65")]
+position = Vector2(416, 792)
+
+[node name="DashDuration" type="Timer" parent="Player"]
+process_callback = 0
+wait_time = 0.4
+one_shot = true
+
+[node name="LaunchDuration" type="Timer" parent="Player"]
+process_callback = 0
+one_shot = true
+
+[node name="HyperDuration" type="Timer" parent="Player"]
+one_shot = true
+
+[node name="Bats" type="Node2D" parent="."]
+
+[node name="Bat" parent="Bats" instance=ExtResource("2_x4cnv")]
+position = Vector2(592, 152)
+
+[node name="Bat2" parent="Bats" instance=ExtResource("2_x4cnv")]
+position = Vector2(1552, 144)
+
+[node name="Bat3" parent="Bats" instance=ExtResource("2_x4cnv")]
+position = Vector2(968, 464)
+
+[node name="Pinballs" type="Node2D" parent="."]
+
+[node name="SonicPinball" parent="Pinballs" instance=ExtResource("2_mmmr6")]
+position = Vector2(360, 648)
+
+[node name="SonicPinball2" parent="Pinballs" instance=ExtResource("2_mmmr6")]
+position = Vector2(1192, 56)
+
+[node name="SonicPinball3" parent="Pinballs" instance=ExtResource("2_mmmr6")]
+position = Vector2(1704, 504)
+
+[node name="SonicPinball4" parent="Pinballs" instance=ExtResource("2_mmmr6")]
+position = Vector2(1208, 904)
+
+[node name="SonicPinball5" parent="Pinballs" instance=ExtResource("2_mmmr6")]
+position = Vector2(256, 104)
+
+[node name="MegaPinball" parent="Pinballs" instance=ExtResource("2_mmmr6")]
+position = Vector2(24, 1040)
+scale = Vector2(5.955, 5.955)
+
+[node name="DEBUG" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="velocity" type="Label" parent="DEBUG"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 952.0
+offset_right = 200.0
+offset_bottom = 1056.0
+script = SubResource("GDScript_a67cn")
+
+[node name="Timer" type="Timer" parent="DEBUG/velocity"]
+wait_time = 0.1
+autostart = true
+
+[node name="moveMode" type="Label" parent="DEBUG"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 928.0
+offset_right = 56.0
+offset_bottom = 951.0
+script = SubResource("GDScript_4rf04")
+
+[connection signal="timeout" from="Player/DashDuration" to="Player" method="_on_dash_duration_timeout"]
+[connection signal="timeout" from="Player/LaunchDuration" to="Player" method="_on_launch_duration_timeout"]
+[connection signal="timeout" from="Player/HyperDuration" to="Player" method="_on_hyper_duration_timeout"]

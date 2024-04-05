@@ -1,0 +1,124 @@
+extends CharacterBody2D
+
+
+const ACCEL = 500
+const TERMINAL_X = 300
+const TERMINAL_Y = 300
+const DASH_SPEED = 1000
+const PINBALL_SPEED = 1500
+const DASH_END_SPEED = 300
+const DASH_DURATION = 0.4
+const LAUNCH_DURATION = 1
+const STEER_STRENGTH = .025
+
+var moveMode = "Glide" # and "Dash", "Launch", "HyperFlight"
+var direction
+var steerDir # Minor control of Flight direction
+var flight = false
+var dashCooldown = false
+
+
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+
+func _ready():
+	$DashDuration.wait_time = DASH_DURATION
+	$LaunchDuration.wait_time = LAUNCH_DURATION
+
+func _physics_process(delta):
+	
+# TEST block
+	#print(velocity)
+	dashCooldown = false
+	
+# AIR DASH
+	if Input.is_action_just_pressed("ui_airdash") and not dashCooldown:
+		# Begin dashing in direction
+		moveMode = "Dash"
+		dashCooldown = true
+		
+		$LaunchDuration.stop() # stop pinball launch timer, in case running
+		$DashDuration.start() 
+		direction = Input.get_vector("move_left","move_right","move_up","move_down")
+		velocity = direction * DASH_SPEED
+	
+	# Steer a particular way while Dashing and Launching
+	if moveMode == "Dash" or moveMode == "Launch":
+		steer()
+	
+	# Dash can be canceled
+	if Input.is_action_just_released("ui_airdash"):
+		if moveMode == "Dash":
+			#$DashDuration.emit_signal(_on_dash_duration_timeout())
+			_on_dash_duration_timeout()
+			$DashDuration.stop()
+
+# NORMAL FLIGHT
+	if moveMode == "Glide":
+	# Y MOVEMENT
+		# Add gravity. Trend towards terminal Y velocity.
+		if velocity.y < TERMINAL_Y:
+			velocity.y += gravity * delta
+		if velocity.y > TERMINAL_Y:
+			velocity.y -= gravity * delta
+	
+	# X MOVEMENT
+		# Get the input direction
+		direction = Input.get_axis("move_left", "move_right")
+	
+		# Increased acceleration if trying to change direction
+		if (direction < 0 and velocity.x > 0) or (direction > 0 and velocity.x < 0):
+			velocity.x += direction * ACCEL * delta * 3
+	
+		# Normal acceleration, but trend towards terminal X velocity
+		elif direction:
+			if abs(velocity.x) < TERMINAL_X:
+				velocity.x += direction * ACCEL * delta
+				
+			if abs(velocity.x) > TERMINAL_X:
+				velocity.x -= direction * ACCEL * delta
+		
+		# Slowly lose momentum if not attempting to move
+		else:
+			velocity.x *= .98
+	
+# COLLISION
+	# Move. Upon collision, store data.
+	var collision = move_and_collide(velocity * delta)
+	if collision:
+		var parent = collision.get_collider().get_parent().name
+
+		# Reset dash
+		dashCooldown = false
+		
+		# Pinball Launch
+		# DEBUG: FLOOR IS ALSO BOUNCY
+		if parent == "Pinballs" or parent == "Floor":
+			$DashDuration.stop()
+			moveMode = "Launch"
+			$LaunchDuration.start() # Launch stops _on_launch_duration_timeout()
+			direction = collision.get_normal()
+			velocity = direction * DASH_SPEED
+			
+
+				
+		# Wall bounce
+		else:
+			velocity = velocity.bounce(collision.get_normal())
+				
+		
+func steer():
+	# flight Steering
+	steerDir = Input.get_vector("move_left","move_right","move_up","move_down")
+	direction = velocity.normalized() # Reminder: direction was originally input when the dash vector was locked in
+	velocity = (direction + steerDir * STEER_STRENGTH).normalized() * velocity.length()
+			
+func stopFlight():
+	moveMode = "Glide"
+	velocity = velocity.limit_length(DASH_END_SPEED)
+	
+func _on_dash_duration_timeout():
+	stopFlight()
+
+func _on_launch_duration_timeout():
+	stopFlight()

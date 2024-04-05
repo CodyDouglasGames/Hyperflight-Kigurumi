@@ -1,0 +1,71 @@
+[gd_scene load_steps=10 format=3 uid="uid://nef3a8fdp77g"]
+
+[ext_resource type="Texture2D" uid="uid://cu3gy0qk5i7mw" path="res://Sprites/bat.png" id="1_nk8jh"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wjut4"]
+radius = 7.99901
+height = 31.9961
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ov7v"]
+atlas = ExtResource("1_nk8jh")
+region = Rect2(0, 0, 28, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mfxb1"]
+atlas = ExtResource("1_nk8jh")
+region = Rect2(28, 0, 28, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qdjvt"]
+atlas = ExtResource("1_nk8jh")
+region = Rect2(56, 0, 28, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kp40o"]
+atlas = ExtResource("1_nk8jh")
+region = Rect2(84, 0, 28, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fd7n3"]
+atlas = ExtResource("1_nk8jh")
+region = Rect2(112, 0, 28, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3odpq"]
+atlas = ExtResource("1_nk8jh")
+region = Rect2(140, 0, 28, 34)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_chynn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ov7v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mfxb1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qdjvt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kp40o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fd7n3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3odpq")
+}],
+"loop": true,
+"name": &"Fly",
+"speed": 13.0
+}]
+
+[node name="Bat" type="CharacterBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-8, 8)
+rotation = 1.55509
+shape = SubResource("CapsuleShape2D_wjut4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(1.945, 1.945)
+sprite_frames = SubResource("SpriteFrames_chynn")
+animation = &"Fly"
+autoplay = "Fly"
+frame_progress = 0.706411

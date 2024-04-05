@@ -1,0 +1,95 @@
+[gd_scene load_steps=7 format=3 uid="uid://d2kd26km0j0l2"]
+
+[ext_resource type="PackedScene" uid="uid://chij81c720oei" path="res://Scenes/player.tscn" id="1_igq65"]
+[ext_resource type="PackedScene" uid="uid://bshp6sk48mac7" path="res://Scenes/sonic_pinball.tscn" id="2_mmmr6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y1468"]
+size = Vector2(96, 1081)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_agwve"]
+size = Vector2(96, 1081)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pvr51"]
+size = Vector2(1920, 97)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ecsnk"]
+size = Vector2(1920, 97)
+
+[node name="Main" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_igq65")]
+position = Vector2(416, 792)
+
+[node name="DashDuration" type="Timer" parent="Player"]
+wait_time = 0.5
+
+[node name="EjectDuration" type="Timer" parent="Player"]
+process_callback = 0
+one_shot = true
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="LeftWall" type="Panel" parent="Walls"]
+offset_left = -96.0
+offset_bottom = 1080.0
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/LeftWall"]
+position = Vector2(96, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall/StaticBody2D"]
+position = Vector2(-48, 539.5)
+shape = SubResource("RectangleShape2D_y1468")
+
+[node name="RightWall" type="Panel" parent="Walls"]
+offset_left = 1920.0
+offset_right = 2016.0
+offset_bottom = 1080.0
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/RightWall"]
+position = Vector2(96, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall/StaticBody2D"]
+position = Vector2(-48, 539.5)
+shape = SubResource("RectangleShape2D_agwve")
+
+[node name="Floor" type="Panel" parent="Walls"]
+offset_top = 1080.0
+offset_right = 1920.0
+offset_bottom = 1176.0
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/Floor"]
+position = Vector2(96, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Floor/StaticBody2D"]
+position = Vector2(864, 47.5)
+shape = SubResource("RectangleShape2D_pvr51")
+
+[node name="Ceiling" type="Panel" parent="Walls"]
+offset_top = -96.0
+offset_right = 1920.0
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/Ceiling"]
+position = Vector2(96, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Ceiling/StaticBody2D"]
+position = Vector2(864, 47.5)
+shape = SubResource("RectangleShape2D_ecsnk")
+
+[node name="Pinballs" type="Node2D" parent="."]
+
+[node name="SonicPinball" parent="Pinballs" instance=ExtResource("2_mmmr6")]
+position = Vector2(360, 648)
+
+[node name="SonicPinball2" parent="Pinballs" instance=ExtResource("2_mmmr6")]
+position = Vector2(1192, 56)
+
+[node name="SonicPinball3" parent="Pinballs" instance=ExtResource("2_mmmr6")]
+position = Vector2(1704, 504)
+
+[node name="SonicPinball4" parent="Pinballs" instance=ExtResource("2_mmmr6")]
+position = Vector2(1208, 904)
+
+[node name="SonicPinball5" parent="Pinballs" instance=ExtResource("2_mmmr6")]
+position = Vector2(256, 104)
+
+[connection signal="timeout" from="Player/DashDuration" to="Player" method="_on_dash_duration_timeout"]

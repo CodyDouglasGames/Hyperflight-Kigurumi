@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bshp6sk48mac7"]
+
+[ext_resource type="Texture2D" uid="uid://cpu2i5gby8dwb" path="res://Sprites/SonicPinball.png" id="1_74ets"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_skpix"]
+
+[node name="SonicPinball" type="CharacterBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(3.83, 3.83)
+shape = SubResource("CircleShape2D_skpix")
+
+[node name="Image" type="Sprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_74ets")

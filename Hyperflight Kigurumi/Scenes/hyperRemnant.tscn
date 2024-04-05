@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://ixrgls3friy5"]
+
+[ext_resource type="Script" path="res://Scenes/hyperRemnant.gd" id="1_bp4fy"]
+[ext_resource type="Texture2D" uid="uid://7qm515328f6c" path="res://Sprites/Hyper2.png" id="1_k5h2f"]
+[ext_resource type="Texture2D" uid="uid://wqw716gx13v8" path="res://Sprites/Hyper.png" id="2_ptr11"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q2vvp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ptr11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_k5h2f")
+}],
+"loop": true,
+"name": &"Hyper",
+"speed": 15.0
+}]
+
+[node name="HyperRemnant" type="Node2D"]
+scale = Vector2(2.355, 1.804)
+script = ExtResource("1_bp4fy")
+
+[node name="Hyper2" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_q2vvp")
+animation = &"Hyper"
+autoplay = "Hyper"
+frame_progress = 0.218774
+
+[connection signal="ready" from="." to="." method="_on_ready"]

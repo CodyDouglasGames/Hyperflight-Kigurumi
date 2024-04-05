@@ -1,0 +1,95 @@
+[gd_scene load_steps=3 format=3 uid="uid://c52kq7d0yvyja"]
+
+[ext_resource type="Script" path="res://Scenes/title.gd" id="1_s5meg"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ssk45"]
+font_size = 17
+
+[node name="Title" type="Node2D"]
+script = ExtResource("1_s5meg")
+
+[node name="Play" type="Panel" parent="."]
+offset_left = 64.0
+offset_top = 128.0
+offset_right = 1088.0
+offset_bottom = 448.0
+
+[node name="Play" type="TextureButton" parent="Play"]
+layout_mode = 0
+offset_right = 1024.0
+offset_bottom = 320.0
+
+[node name="Label" type="Label" parent="Play"]
+layout_mode = 0
+offset_right = 1025.22
+offset_bottom = 320.0
+theme_override_font_sizes/font_size = 106
+text = "Play (Start)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Quit" type="Panel" parent="."]
+offset_left = 64.0
+offset_top = 640.0
+offset_right = 1088.0
+offset_bottom = 960.0
+
+[node name="Quit" type="TextureButton" parent="Quit"]
+layout_mode = 0
+offset_right = 1024.0
+offset_bottom = 320.0
+
+[node name="Label" type="Label" parent="Quit"]
+layout_mode = 0
+offset_right = 1025.22
+offset_bottom = 320.0
+theme_override_font_sizes/font_size = 106
+text = "Quit (Select)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Quit2" type="Panel" parent="."]
+offset_left = 1152.0
+offset_top = 128.0
+offset_right = 1856.0
+offset_bottom = 960.0
+
+[node name="Label" type="Label" parent="Quit2"]
+layout_mode = 0
+offset_left = 16.0
+offset_right = 688.0
+offset_bottom = 834.0
+theme_override_font_sizes/font_size = 106
+text = "GOAL........
+* KILL BATS
+
+HOW TO PLAY...............
+* Dash into Pinballs with (A button), or Glide into pinballs using the analogue stick. There is a fan blowing air upward, so you feel \"floaty\" (Fan image isn't in place, just trust me bro)
+* Ricochet off pinballs, steer towards Bats, and attack them with Hyperflight (X button).
+
+MORE INFO..........
+Idle Glide:
+* You are wind-resistant when holding up, and aerodynamic when holding down
+
+Air Dash:
+* Trigger by A button
+* Lasts a brief time, meant to evade enemies and assist in lining up pinball bounces
+* Let go early to end Dash
+* Can only dash once, but resets when you collide with anything
+
+Pinball Launch:
+* Trigger by collision with pinball
+* Lasts a brief time
+* You are immune to gravity during Launch, and can steer your trajectory
+
+Hyperflight:
+* Triggered by X, ONLY available during a Pinball Launch
+* Lasts until collision
+* Only way to kill enemies (all other collision would damage the player)
+
+"
+label_settings = SubResource("LabelSettings_ssk45")
+autowrap_mode = 3
+
+[connection signal="pressed" from="Play/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="Quit/Quit" to="." method="_on_quit_pressed"]
