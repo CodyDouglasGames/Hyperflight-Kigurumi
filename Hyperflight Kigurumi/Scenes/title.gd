@@ -8,7 +8,9 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if Input.is_action_just_pressed("ui_start"):
-		get_tree().change_scene_to_file("res://Scenes/main.tscn")
+		_on_play_pressed()
+	if Input.is_action_just_pressed("ui_select"):
+		_on_quit_pressed()
 
 func _on_play_pressed():
 	get_tree().change_scene_to_file("res://Scenes/main.tscn")
